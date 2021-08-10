@@ -15,3 +15,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports:
     gradethis
+URL: https://github.com/petzi53/exerciseR
+BugReports: https://github.com/petzi53/exerciseR/issues
