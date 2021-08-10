@@ -1,0 +1,84 @@
+---
+title: "Estimate Correlations New"
+author: "Peter Baumgartner"
+date: "`r Sys.Date()`"
+description: "Estimate correlation coefficients with trial & error via a template."
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+params:
+  data: mlbbat10
+  x: obp
+  y: slg
+  perfect_low: 0.025
+  pass_low: 0.1
+  low: 0.25
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(glue)
+library(emo)
+library(learnr)
+library(gradethis)
+library(openintro)
+gradethis_setup(pass.praise = TRUE, fail.encourage = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Perception of correlation
+
+The following exercises uses the idea to exercise the perception of correlation values as outlined in the [ims-tutorial](https://openintro.shinyapps.io/ims-03-model-02/#section-perception-of-correlation). 
+
+
+
+```{r insert-file, echo=FALSE, results='asis'}
+
+res <- knitr::knit_child('test.Rmd', quiet = TRUE)
+cat(res, sep = '\n')
+
+```
+
+```{r insert-file2, echo=FALSE, results='asis'}
+
+res <- knitr::knit_child('test2.Rmd', quiet = TRUE)
+cat(res, sep = '\n')
+
+```
+
+
+```{r qt}
+question_text(
+  "Please enter the word 'C0rrect' below:",
+  answer("correct", message = "Don't forget to capitalize"),
+  answer("c0rrect", message = "Don't forget to capitalize"),
+  answer("Correct", message = "Is it really an 'o'?"),
+  answer("C0rrect ", message = "Make sure you do not have a trailing space"),
+  answer("C0rrect", correct = TRUE),
+  allow_retry = TRUE,
+  trim = FALSE
+)
+```
+
+
+## Multiple-Choice
+
+```{r mc}
+question_checkbox(
+  "Select all the toppings that belong on a Margherita Pizza:",
+  answer("tomato", correct = TRUE, message = "Partly correct!"),
+  answer("mozzarella", correct = TRUE),
+  answer("basil", correct = TRUE),
+  answer("extra virgin olive oil", correct = TRUE),
+  answer("pepperoni", message = "Great topping! ... just not on a Margherita Pizza"),
+  answer("onions"),
+  answer("bacon"),
+  answer("spinach"),
+  random_answer_order = FALSE,
+  allow_retry = TRUE,
+  try_again = "Be sure to select all four toppings!"
+)
+```
+

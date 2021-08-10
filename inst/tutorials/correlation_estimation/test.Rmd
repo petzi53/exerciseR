@@ -1,0 +1,91 @@
+
+```{r display-data}
+data1 <- openintro::mlbbat10
+x1 <- data1$obp
+y1 <- data1$slg
+```
+
+
+
+### Estimate the correlation
+
+
+```{r display-plot}
+# Run this and look at the plot
+my_cor <- data1 %>%
+    summarize(N = n(), r = cor(x1, y1))
+my_cor$r
+
+
+
+cor_perfect_low <- my_cor$r - params$perfect_low
+cor_pass_low <- my_cor$r - params$pass_low
+cor_bit_low <- my_cor$r - params$low
+
+cor_perfect_high <- my_cor$r + params$perfect_low
+cor_pass_high <- my_cor$r + params$pass_low
+cor_bit_high <- my_cor$r + params$low
+
+
+ggplot(data1, aes(x1, y1)) +
+  geom_point()
+    
+
+
+
+
+```
+
+Look at the above scatterplot in the [`r params$data` dataset](https://www.openintro.org/data/) (n = `r my_cor$N`) from the OpenIntro package.
+
+What do you think is the correlation between `r params$x` and `r params$y`? (Everything in the range of ±0.1 of the exact correlation values counts as correct; ±.025 as perfect.)
+
+Try different values to see the variation of the feedback message. For instance: -1.2, -0.8, 0.5, 0.7, 0.8, 0.81, 0.9, 1.2
+
+
+```{r corr_est, exercise = TRUE}
+# write down your estimation
+```
+
+```{r corr_est-check}
+msg_perfect = glue("Hey, this is perfect! The exact value is {round(my_cor$r,5)}! Did you cheat? {emo::ji('smile')}")
+msg_pass = glue("The calculated correlation of {round(my_cor$r,5)} is pretty near to your estimation!")
+msg_illegal = "Illegal value. Correlation has to be between -1 and +1."
+msg_direction = "Wrong direction. The correlation in the plot is positive as higher values of the x-axis
+    tend to related with higher values of the y-axis."
+msg_too_high = "No, your estimation is way too high."
+msg_too_low = "No, your estimation is way too low."
+msg_bit_high = "No, it is somewhat higher."
+msg_bit_low = "No, it is somewhat lower."
+msg_fail = "Program error!"
+
+grade_this({
+  if (.result >= 1.0 | .result <= -1.0) {
+    fail(msg_illegal)
+  }
+  if ((.result < 0 & my_cor$r > 0)  || (.result > 0 & my_cor$r < 0)) {
+    fail(msg_direction)
+  }
+  if ((.result >= cor_perfect_low) & (.result <= cor_perfect_high)) {
+    pass(msg_perfect)
+  }
+  if ((.result >= cor_pass_low) & (.result <= cor_pass_high)) {
+    pass(msg_pass)
+  }
+  if ((.result < cor_pass_low) & (.result >= cor_bit_low)) {
+    fail(msg_bit_high)
+  }
+  if (.result < cor_bit_low) {
+    fail(msg_too_high)
+  }
+  if ((.result >= cor_pass_high) & (.result <= cor_bit_high)) {
+    fail(msg_bit_low)
+  }
+  if (.result > cor_bit_high) {
+    fail(msg_too_low)
+  }
+  fail(msg_fail)
+})
+```
+
+
